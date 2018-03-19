@@ -37,7 +37,6 @@ extern crate crossbeam_deque;
 extern crate lazy_static;
 extern crate libc;
 extern crate num_cpus;
-extern crate rand;
 
 #[macro_use]
 mod log;
@@ -53,6 +52,7 @@ mod test;
 mod thread_pool;
 mod unwind;
 mod util;
+mod xorshift;
 
 #[cfg(rayon_unstable)]
 pub mod internal;

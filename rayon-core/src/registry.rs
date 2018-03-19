@@ -7,7 +7,6 @@ use job::Job;
 use internal::task::Task;
 use latch::{LatchProbe, Latch, CountLatch, LockLatch, SpinLatch, TickleLatch};
 use log::Event::*;
-use rand::{self, Rng};
 use sleep::Sleep;
 use std::any::Any;
 use std::cell::{Cell, UnsafeCell};
@@ -18,6 +17,7 @@ use std::u32;
 use std::usize;
 use unwind;
 use util::leak;
+use xorshift::XorShiftRng;
 
 pub struct Registry {
     thread_infos: Vec<ThreadInfo>,
@@ -460,7 +460,7 @@ pub struct WorkerThread {
     breadth_first: bool,
 
     /// A weak random number generator.
-    rng: UnsafeCell<rand::XorShiftRng>,
+    rng: UnsafeCell<XorShiftRng>,
 
     registry: Arc<Registry>,
 }
@@ -646,7 +646,7 @@ unsafe fn main_loop(worker: Deque<JobRef>,
         worker: worker,
         breadth_first: breadth_first,
         index: index,
-        rng: UnsafeCell::new(rand::XorShiftRng::new_unseeded()),
+        rng: UnsafeCell::new(XorShiftRng::new_unseeded()),
         registry: registry.clone(),
     };
     WorkerThread::set_current(&worker_thread);
