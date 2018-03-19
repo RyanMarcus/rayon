@@ -646,7 +646,7 @@ unsafe fn main_loop(worker: Deque<JobRef>,
         worker: worker,
         breadth_first: breadth_first,
         index: index,
-        rng: UnsafeCell::new(rand::weak_rng()),
+        rng: UnsafeCell::new(rand::XorShiftRng::new_unseeded()),
         registry: registry.clone(),
     };
     WorkerThread::set_current(&worker_thread);
